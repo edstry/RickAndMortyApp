@@ -68,5 +68,6 @@ dependencies {
     implementation(libs.navigation.core)
     implementation(libs.hilt.navigationCompose)
     implementation(libs.logging.interceptor)
+    implementation(libs.glide.compose)
 
 }

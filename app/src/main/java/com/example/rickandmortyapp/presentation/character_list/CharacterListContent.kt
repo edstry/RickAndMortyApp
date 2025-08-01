@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.rickandmortyapp.presentation.character_list.components.CharactersList
+import com.example.rickandmortyapp.presentation.character_list.components.LoadingScreen
 
 @Composable
 fun CharacterListContent(
@@ -15,12 +17,13 @@ fun CharacterListContent(
             Log.d("TAG_CHARACTER_LIST", currentState.message)
         }
         CharacterListState.Loading -> {
-            Log.d("TAG_CHARACTER_LIST", currentState.toString())
+            LoadingScreen()
         }
         is CharacterListState.SuccessLoaded -> {
             Log.d("TAG_CHARACTER_LIST", currentState.characters.toString())
+            CharactersList(characters = currentState.characters)
         }
-        CharacterListState.Initial -> { Log.d("TAG_CHARACTER_LIST", currentState.toString()) }
+        CharacterListState.Initial -> {}
     }
 
 
