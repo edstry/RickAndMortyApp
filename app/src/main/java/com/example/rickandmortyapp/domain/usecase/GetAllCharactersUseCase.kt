@@ -15,16 +15,7 @@ import javax.inject.Inject
 class GetAllCharactersUseCase @Inject constructor(
     private val repository: CharactersRepository
 ) {
-    operator fun invoke(): Flow<Resource<List<Character>>> = flow {
-        try {
-            emit(Resource.Loading())
-            val character = repository.getAllCharacters().resultDto.map { it.toEntities() }
-            emit(Resource.Success(character))
-
-        } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occured"))
-        } catch (e: IOException) {
-            emit(Resource.Error("Could`t reach server. Check your internet connection"))
-        }
+    operator fun invoke(): Flow<Resource<List<Character>>> {
+        return repository.getAllCharacters()
     }
 }

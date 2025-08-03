@@ -1,8 +1,11 @@
 package com.example.rickandmortyapp.domain.repository
 
-import com.example.rickandmortyapp.data.network.dto.ResultDto
+import com.example.rickandmortyapp.Utils.common.Resource
+import com.example.rickandmortyapp.domain.entity.Character
+import kotlinx.coroutines.flow.Flow
 
 interface CharactersRepository {
 
-    suspend fun getAllCharacters(): ResultDto
+    fun getAllCharacters(): Flow<Resource<List<Character>>>
+    suspend fun loadNextData()
 }
