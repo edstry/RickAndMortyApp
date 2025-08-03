@@ -18,3 +18,4 @@ interface CharactersDao {
     @Query("DELETE FROM character_list")
     suspend fun clearCharacterDb()
 }
+

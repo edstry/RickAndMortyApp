@@ -11,6 +11,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -18,26 +19,36 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 interface DataModule {
     companion object {
+
+        @Provides
+        fun provideApplicationContext(@ApplicationContext appContext: Context): Context {
+            return appContext
+        }
+
         @Provides
         @Singleton
         fun provideApiService(): ApiService = ApiFactory.apiService
 
-        @Provides
-        @Singleton
-        fun provideCharactersRepository(apiService: ApiService): CharactersRepository {
-            return CharactersRepositoryImpl(apiService)
-        }
 
         @Provides
         fun provideCharactersDatabase(context: Context): CharacterDataBase {
             return CharacterDataBase.getInstance(context)
         }
-
         @Provides
         @Singleton
         fun provideCharactersDao(database: CharacterDataBase): CharactersDao {
             return database.charactersDao()
         }
+
+        @Provides
+        @Singleton
+        fun provideCharactersRepository(apiService: ApiService, charactersDao: CharactersDao): CharactersRepository {
+            return CharactersRepositoryImpl(apiService, charactersDao)
+        }
+
+
+
+
     }
 
 

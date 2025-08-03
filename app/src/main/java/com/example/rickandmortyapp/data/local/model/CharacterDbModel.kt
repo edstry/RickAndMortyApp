@@ -2,7 +2,6 @@ package com.example.rickandmortyapp.data.local.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.rickandmortyapp.data.network.dto.CharacterDto
 import com.example.rickandmortyapp.domain.entity.Character
 
 @Entity(tableName = "character_list")
@@ -15,7 +14,7 @@ data class CharacterDbModel(
     val imageUrl: String
 )
 
-fun CharacterDbModel.toEntities(): Character {
+fun CharacterDbModel.toEntity(): Character {
     return Character(
         id = id,
         name = name,
@@ -24,4 +23,8 @@ fun CharacterDbModel.toEntities(): Character {
         status = status,
         imageUrl = imageUrl
     )
+}
+
+fun List<CharacterDbModel>.toEntities(): List<Character> {
+    return map { it.toEntity() }
 }
