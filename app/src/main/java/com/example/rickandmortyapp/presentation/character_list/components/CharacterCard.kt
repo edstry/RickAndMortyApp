@@ -116,7 +116,8 @@ fun CharacterCard(character: Character) {
                 Text(
                     text = "${character.gender} | ${character.species}",
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
             }
             Spacer(modifier = Modifier.height(15.dp))

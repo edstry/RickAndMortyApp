@@ -69,5 +69,7 @@ dependencies {
     implementation(libs.hilt.navigationCompose)
     implementation(libs.logging.interceptor)
     implementation(libs.glide.compose)
+    implementation(libs.room.core)
+    ksp(libs.room.compiler)
 
 }

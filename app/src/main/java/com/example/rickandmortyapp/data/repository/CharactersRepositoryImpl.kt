@@ -33,11 +33,12 @@ class CharactersRepositoryImpl @Inject constructor(
                     emit(Resource.Success(charactersCached))
                     return@collect
                 }
+
                 val response = if (startFrom == null) {
                     emit(Resource.Loading())
                     apiService.getAllCharacters()
                 } else {
-                    val page = nextData!!.split("=").last()
+                    val page = startFrom.split("=").last()
                     apiService.getAllCharacters(page = page)
                 }
 

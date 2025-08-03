@@ -1,5 +1,7 @@
 package com.example.rickandmortyapp.domain.entity
 
+import com.example.rickandmortyapp.data.local.model.CharacterDbModel
+
 data class Character(
     val id: Int,
     val name: String,
@@ -8,3 +10,14 @@ data class Character(
     val status: String,
     val imageUrl: String
 )
+
+fun Character.toDbModel(): CharacterDbModel {
+    return CharacterDbModel(
+        id = id,
+        name = name,
+        gender = gender,
+        species = species,
+        status = status,
+        imageUrl = imageUrl
+    )
+}
