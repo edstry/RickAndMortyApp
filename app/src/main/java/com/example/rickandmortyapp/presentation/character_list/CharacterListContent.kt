@@ -15,7 +15,7 @@ fun CharacterListContent(
 ) {
     val state by viewModel.state
 
-    val charactersState by viewModel.characterListForFilter.collectAsState()
+    val characterListForFilter by viewModel.characterListForFilter.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
     val isLoadingNext by viewModel.isLoading.collectAsState()
 
@@ -24,7 +24,7 @@ fun CharacterListContent(
     }
     if(state.success) {
         CharactersList(
-            characters = charactersState,
+            characters = characterListForFilter,
             viewModel = viewModel,
             isSearching = isSearching,
             nextDataIsLoading = isLoadingNext
@@ -33,7 +33,7 @@ fun CharacterListContent(
     if(state.error.isNotBlank()) {
         Toast.makeText(LocalContext.current, state.error, Toast.LENGTH_LONG).show()
         CharactersList(
-            characters = charactersState,
+            characters = characterListForFilter,
             viewModel = viewModel,
             isSearching = isSearching,
             nextDataIsLoading = isLoadingNext

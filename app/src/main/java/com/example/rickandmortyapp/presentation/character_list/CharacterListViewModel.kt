@@ -88,9 +88,8 @@ class CharacterListViewModel @Inject constructor(
             .onEach { result ->
                 when (result) {
                     is Resource.Error<*> -> {
-                        _state.value = CharactersState(
-                            error = result.message ?: "An unexpected error occured"
-                        )
+                        _state.value = CharactersState(error = result.message ?: "An unexpected error occured")
+
                         loadCharactersFromDatabase()
                     }
 

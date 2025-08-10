@@ -11,13 +11,10 @@ data class Character(
     val imageUrl: String
 ) {
     fun doesMatchSearchQuery(query: String): Boolean {
-        val matchingCombination = listOf(
-            gender,
-            name,
-        )
-        return matchingCombination.any {
-            it.contains(query, ignoreCase = true)
-        }
+        return gender.equals(query, ignoreCase = true) ||
+                name.equals(query, ignoreCase = true) ||
+                species.equals(query, ignoreCase = true) ||
+                status.equals(query, ignoreCase = true)
     }
 }
 
