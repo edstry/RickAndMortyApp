@@ -1,5 +1,6 @@
 package com.example.rickandmortyapp.presentation.character_list.components
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,7 +41,10 @@ import com.example.rickandmortyapp.presentation.ui.theme.Grey40
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun CharacterCard(character: Character) {
+fun CharacterCard(
+    character: Character,
+    onItemClickListener: (Character) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxSize()
@@ -48,14 +52,16 @@ fun CharacterCard(character: Character) {
                 elevation = 16.dp,
                 spotColor = Grey40,
                 shape = RoundedCornerShape(15.dp)
-            ),
+            )
+            .clickable {
+                onItemClickListener(character)
+            },
         colors = CardDefaults.cardColors(containerColor = Grey40),
         shape = RoundedCornerShape(15.dp),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .clickable { },
         ) {
             Box(
                 modifier = Modifier
@@ -116,7 +122,8 @@ fun CharacterCard(character: Character) {
                 Text(
                     text = "${character.gender} | ${character.species}",
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
             }
             Spacer(modifier = Modifier.height(15.dp))

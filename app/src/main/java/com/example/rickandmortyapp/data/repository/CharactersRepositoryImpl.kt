@@ -2,21 +2,27 @@ package com.example.rickandmortyapp.data.repository
 
 import android.util.Log
 import com.example.rickandmortyapp.Utils.common.Resource
+import com.example.rickandmortyapp.data.local.db.CharactersDao
+import com.example.rickandmortyapp.data.local.model.toEntities
 import com.example.rickandmortyapp.data.network.api.ApiService
 import com.example.rickandmortyapp.data.network.dto.toEntities
 import com.example.rickandmortyapp.domain.entity.Character
+import com.example.rickandmortyapp.domain.entity.toDbModel
 import com.example.rickandmortyapp.domain.repository.CharactersRepository
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.retry
 import okio.IOException
 import retrofit2.HttpException
 import javax.inject.Inject
 
 class CharactersRepositoryImpl @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val charactersDao: CharactersDao
 ) : CharactersRepository {
 
     private val nextDataNeededEvents = MutableSharedFlow<Unit>(replay = 1)
@@ -29,15 +35,17 @@ class CharactersRepositoryImpl @Inject constructor(
         nextDataNeededEvents.collect {
             try {
                 val startFrom = nextData
-                if(startFrom == null && charactersCached.isNotEmpty()) {
+                if (startFrom == null && charactersCached.isNotEmpty()) {
                     emit(Resource.Success(charactersCached))
                     return@collect
                 }
+
                 val response = if (startFrom == null) {
+
                     emit(Resource.Loading())
                     apiService.getAllCharacters()
                 } else {
-                    val page = nextData!!.split("=").last()
+                    val page = startFrom.split("=").last()
                     apiService.getAllCharacters(page = page)
                 }
 
@@ -58,5 +66,23 @@ class CharactersRepositoryImpl @Inject constructor(
 
     override suspend fun loadNextData() {
         nextDataNeededEvents.emit(Unit)
+    }
+
+    override suspend fun triggerLoadData() {
+        nextData = null
+        _charactersCached.clear()
+        nextDataNeededEvents.emit(Unit)
+    }
+
+    override val getCharactersFromDatabase: Flow<List<Character>> = charactersDao.getCharactersFromDb()
+        .map { it.toEntities() }
+
+
+    override suspend fun addCharacterToDatabase(character: Character) {
+        charactersDao.addCharacterToDb(character.toDbModel())
+    }
+
+    override suspend fun clearCharactersFromDatabase() {
+        charactersDao.clearCharacterDb()
     }
 }
