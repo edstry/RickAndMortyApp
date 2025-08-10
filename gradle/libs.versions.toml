@@ -14,10 +14,10 @@ hilt = "2.56.2"
 ksp = "2.1.21-2.0.1"
 navigation = "2.9.2"
 composeHilt = "1.2.0"
-parcelize = "2.2.20-Beta2"
 logging = "5.1.0"
 glide = "1.0.0-beta01"
 room = "2.7.2"
+serializationCore = "1.9.0"
 #####################################################################################
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +46,7 @@ logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-intercep
 glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glide" }
 room-core = { group = "androidx.room", name = "room-ktx", version.ref = "room"}
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room"}
+serialization-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serializationCore"}
 #####################################################################################
 
 [plugins]
@@ -55,6 +56,6 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 #####################################################################################
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serializationCore" }
 #####################################################################################
 

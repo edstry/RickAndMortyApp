@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RickAndMortyApp</string>
+    <string name="label_name">Name</string>
+    <string name="label_gender">Gender</string>
+    <string name="label_status">Status</string>
+    <string name="lable_species">Species</string>
 </resources>

@@ -11,3 +11,6 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Grey40 = Color(0xFF9b9b9b)
 val Pink40 = Color(0xFF7D5260)
 val Black122 = Color(0xFF202025)
+val BgUsersColor = Color(0xff262d3a)
+val LabelColor = Color(0xffb5eefd)
+

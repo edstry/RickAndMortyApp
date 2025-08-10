@@ -9,6 +9,7 @@ interface CharactersRepository {
 
     fun getAllCharacters(): Flow<Resource<List<Character>>>
     suspend fun loadNextData()
+    suspend fun triggerLoadData()
 
     val getCharactersFromDatabase: Flow<List<Character>>
     suspend fun addCharacterToDatabase(character: Character)

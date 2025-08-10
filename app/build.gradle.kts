@@ -4,8 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.parcelize)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -71,5 +71,6 @@ dependencies {
     implementation(libs.glide.compose)
     implementation(libs.room.core)
     ksp(libs.room.compiler)
+    implementation(libs.serialization.core)
 
 }

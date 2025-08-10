@@ -6,12 +6,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.rickandmortyapp.domain.entity.Character
 import com.example.rickandmortyapp.presentation.character_list.components.CharactersList
 import com.example.rickandmortyapp.presentation.character_list.components.LoadingScreen
 
 @Composable
 fun CharacterListContent(
-    viewModel: CharacterListViewModel = hiltViewModel()
+    viewModel: CharacterListViewModel = hiltViewModel(),
+    onItemClickListener: (Character) -> Unit
 ) {
     val state by viewModel.state
 
@@ -27,7 +29,8 @@ fun CharacterListContent(
             characters = characterListForFilter,
             viewModel = viewModel,
             isSearching = isSearching,
-            nextDataIsLoading = isLoadingNext
+            nextDataIsLoading = isLoadingNext,
+            onItemClickListener = onItemClickListener
         )
     }
     if(state.error.isNotBlank()) {
@@ -36,7 +39,8 @@ fun CharacterListContent(
             characters = characterListForFilter,
             viewModel = viewModel,
             isSearching = isSearching,
-            nextDataIsLoading = isLoadingNext
+            nextDataIsLoading = isLoadingNext,
+            onItemClickListener = onItemClickListener
         )
     }
 }

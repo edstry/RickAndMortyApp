@@ -2,6 +2,7 @@
 
 package com.example.rickandmortyapp.presentation.character_list
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ import com.example.rickandmortyapp.domain.usecase.ClearCharactersFromDbUseCase
 import com.example.rickandmortyapp.domain.usecase.GetAllCharactersUseCase
 import com.example.rickandmortyapp.domain.usecase.GetCharactersFromDbUseCase
 import com.example.rickandmortyapp.domain.usecase.LoadNextDataUseCase
+import com.example.rickandmortyapp.domain.usecase.TriggerLoadDataUseCase
 import com.example.rickandmortyapp.presentation.character_list.components.CharactersState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -37,7 +39,8 @@ class CharacterListViewModel @Inject constructor(
     private val loadNextDataUseCase: LoadNextDataUseCase,
     private val getCharactersFromDbUseCase: GetCharactersFromDbUseCase,
     private val addCharacterToDbUseCase: AddCharacterToDbUseCase,
-    private val clearCharactersFromDbUseCase: ClearCharactersFromDbUseCase
+    private val clearCharactersFromDbUseCase: ClearCharactersFromDbUseCase,
+    private val triggerLoadDataUseCase: TriggerLoadDataUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(CharactersState())
@@ -83,10 +86,11 @@ class CharacterListViewModel @Inject constructor(
         getCharacters()
     }
 
-    private fun getCharacters() {
+    fun getCharacters() {
         getAllCharactersUseCase()
             .onEach { result ->
                 when (result) {
+
                     is Resource.Error<*> -> {
                         _state.value = CharactersState(error = result.message ?: "An unexpected error occured")
 
@@ -94,6 +98,7 @@ class CharacterListViewModel @Inject constructor(
                     }
 
                     is Resource.Loading<*> -> {
+                        Log.d("awfawdasdwd", "23434")
                         _state.value = CharactersState(isLoading = true)
                     }
 
@@ -147,8 +152,10 @@ class CharacterListViewModel @Inject constructor(
         }
     }
 
-    fun onClickSearch() {
-
+    fun triggerLoadData() {
+        viewModelScope.launch {
+            triggerLoadDataUseCase()
+        }
     }
 }
 

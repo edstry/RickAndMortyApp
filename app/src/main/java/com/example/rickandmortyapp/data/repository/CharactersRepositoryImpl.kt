@@ -41,6 +41,7 @@ class CharactersRepositoryImpl @Inject constructor(
                 }
 
                 val response = if (startFrom == null) {
+
                     emit(Resource.Loading())
                     apiService.getAllCharacters()
                 } else {
@@ -64,6 +65,12 @@ class CharactersRepositoryImpl @Inject constructor(
     override fun getAllCharacters() = loadedCharacters
 
     override suspend fun loadNextData() {
+        nextDataNeededEvents.emit(Unit)
+    }
+
+    override suspend fun triggerLoadData() {
+        nextData = null
+        _charactersCached.clear()
         nextDataNeededEvents.emit(Unit)
     }
 
