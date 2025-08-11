@@ -1,5 +1,6 @@
 package com.example.rickandmortyapp.presentation.character_list
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,7 +20,6 @@ fun CharacterListContent(
 
     val characterListForFilter by viewModel.characterListForFilter.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
-    val isLoadingNext by viewModel.isLoading.collectAsState()
 
     if(state.isLoading) {
         LoadingScreen()
@@ -29,7 +29,7 @@ fun CharacterListContent(
             characters = characterListForFilter,
             viewModel = viewModel,
             isSearching = isSearching,
-            nextDataIsLoading = isLoadingNext,
+            nextDataIsLoading = state.nextDataLoading,
             onItemClickListener = onItemClickListener
         )
     }
@@ -39,7 +39,6 @@ fun CharacterListContent(
             characters = characterListForFilter,
             viewModel = viewModel,
             isSearching = isSearching,
-            nextDataIsLoading = isLoadingNext,
             onItemClickListener = onItemClickListener
         )
     }

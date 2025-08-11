@@ -20,6 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,19 +48,15 @@ class CharacterListViewModel @Inject constructor(
     val state: State<CharactersState>
         get() = _state
 
-    private var charactersList = listOf<Character>()
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
     private val _isSearching = MutableStateFlow(false)
     val isSearching
         get() = _isSearching.asStateFlow()
 
-    val isLoading = MutableStateFlow(false)
-
     fun onSearchTextChange(text: String) {
         _searchText.value = text
     }
-
     private val _characterListForFilter = MutableStateFlow<List<Character>>(listOf<Character>())
     val characterListForFilter = _searchText
         .debounce(500L)
@@ -68,7 +65,7 @@ class CharacterListViewModel @Inject constructor(
             if (searchText.isBlank()) {
                 characters
             } else {
-                delay(1000)
+                delay(500)
                 characters.filter {
                     it.doesMatchSearchQuery(searchText)
                 }
@@ -81,7 +78,6 @@ class CharacterListViewModel @Inject constructor(
             _characterListForFilter.value
         )
 
-
     init {
         getCharacters()
     }
@@ -92,13 +88,13 @@ class CharacterListViewModel @Inject constructor(
                 when (result) {
 
                     is Resource.Error<*> -> {
-                        _state.value = CharactersState(error = result.message ?: "An unexpected error occured")
+                        _state.value =
+                            CharactersState(error = result.message ?: "An unexpected error occured")
 
                         loadCharactersFromDatabase()
                     }
 
                     is Resource.Loading<*> -> {
-                        Log.d("awfawdasdwd", "23434")
                         _state.value = CharactersState(isLoading = true)
                     }
 
@@ -107,8 +103,8 @@ class CharacterListViewModel @Inject constructor(
 
                         _characterListForFilter.value = result.data ?: emptyList()
                         clearCharacterListFromDatabase()
-                        charactersList = result.data ?: emptyList()
-                        charactersList.forEach {
+                        val charactersToDb = result.data ?: emptyList()
+                        charactersToDb.forEach {
                             addCharacterToDatabase(it)
                         }
                     }
@@ -141,14 +137,13 @@ class CharacterListViewModel @Inject constructor(
     }
 
     fun loadNextCharacters() {
-        if (charactersList.isNotEmpty()) {
-            viewModelScope.launch {
-                _characterListForFilter.value = charactersList
-                isLoading.value = true
-                delay(500)
-                loadNextDataUseCase()
-                isLoading.value = false
-            }
+        viewModelScope.launch {
+            _state.value = CharactersState(
+                success = true,
+                nextDataLoading = true
+            )
+            delay(500)
+            loadNextDataUseCase()
         }
     }
 

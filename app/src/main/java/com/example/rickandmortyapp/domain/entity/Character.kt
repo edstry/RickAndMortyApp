@@ -17,10 +17,19 @@ data class Character(
     val imageUrl: String
 ) {
     fun doesMatchSearchQuery(query: String): Boolean {
-        return gender.equals(query, ignoreCase = true) ||
-                name.equals(query, ignoreCase = true) ||
-                species.equals(query, ignoreCase = true) ||
-                status.equals(query, ignoreCase = true)
+//        val matchingCombinations = listOf(
+//            name,
+//            gender,
+//            species,
+//            status
+//        )
+//        return matchingCombinations.any {
+//            it.equals(query, ignoreCase = true)
+//        }
+        return name.contains(query, ignoreCase = true) ||
+                gender.equals(query, ignoreCase = true) ||
+                species.contains(query, ignoreCase = true) ||
+                status.contains(query, ignoreCase = true)
     }
 
     companion object {

@@ -42,9 +42,10 @@ fun CharactersList(
     characters: List<Character>,
     viewModel: CharacterListViewModel,
     isSearching: Boolean,
-    nextDataIsLoading: Boolean,
+    nextDataIsLoading: Boolean = false,
     onItemClickListener: (Character) -> Unit
 ) {
+
     val searchText by viewModel.searchText.collectAsState()
     val isRefreshing = remember {
         mutableStateOf(false)
